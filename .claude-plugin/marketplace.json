@@ -1,0 +1,12 @@
+{
+  "name": "game-dev-2d",
+  "owner": { "name": "MisterVitoPro" },
+  "description": "2D game development plugins for Claude Code.",
+  "plugins": [
+    {
+      "name": "pixel-sprite-generator",
+      "source": { "source": "github", "repo": "MisterVitoPro/pixel-sprite-generator" },
+      "description": "Generate square pixel-art sprites from semantic JSON grids + palettes. Deterministic, no external image model."
+    }
+  ]
+}
