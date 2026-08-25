@@ -1,12 +1,18 @@
 {
   "name": "game-dev-2d",
   "owner": { "name": "MisterVitoPro" },
-  "description": "2D game development plugins for Claude Code.",
+  "description": "2D game development plugins for Claude Code: design documents and game-ready art assets.",
   "plugins": [
     {
       "name": "pixel-sprite-generator",
       "source": { "source": "github", "repo": "MisterVitoPro/pixel-sprite-generator" },
       "description": "Generate square pixel-art sprites from semantic JSON grids + palettes. Deterministic, no external image model."
+    },
+    {
+      "name": "gdd",
+      "source": { "source": "github", "repo": "MisterVitoPro/gdd" },
+      "description": "Game Doc Forge: multi-agent pipeline that turns a game idea into an audited Game Design Document through a pillar-first concept interview, a forked video-game or tabletop deep interview, optional web research, supplementary documents, and a session index.",
+      "category": "documentation"
     }
   ]
 }
