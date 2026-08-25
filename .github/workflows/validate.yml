@@ -1,0 +1,60 @@
+name: Validate catalogs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  catalogs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate marketplace JSON
+        run: |
+          python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+          python3 -m json.tool .agents/plugins/marketplace.json > /dev/null
+          echo "Both marketplace manifests are valid JSON"
+
+      - name: Validate Codex marketplace contract
+        run: |
+          jq -e '.name | type == "string" and length > 0' \
+            .agents/plugins/marketplace.json > /dev/null
+          jq -e '
+            all(.plugins[];
+              (.name | type == "string" and length > 0) and
+              (.source.source == "url") and
+              (.source.url | type == "string" and startswith("https://")) and
+              (.source.ref | type == "string" and length > 0) and
+              (.source.sha | type == "string" and test("^[0-9a-f]{40}$")) and
+              (.policy.installation | IN("NOT_AVAILABLE", "AVAILABLE", "INSTALLED_BY_DEFAULT")) and
+              (.policy.authentication | IN("ON_INSTALL", "ON_USE")) and
+              (.category | type == "string" and length > 0)
+            )
+          ' .agents/plugins/marketplace.json > /dev/null
+
+      - name: Check every Codex plugin is also in the Claude catalog
+        run: |
+          claude_names=$(jq -r '.plugins[].name' .claude-plugin/marketplace.json | sort)
+          codex_names=$(jq -r '.plugins[].name' .agents/plugins/marketplace.json | sort)
+          missing=$(comm -13 <(echo "$claude_names") <(echo "$codex_names"))
+          if [ -n "$missing" ]; then
+            echo "Codex catalog lists plugins absent from the Claude catalog: $missing"
+            exit 1
+          fi
+
+      - name: Check Codex pins resolve to their tag on the source repo
+        run: |
+          while read -r row; do
+            name=$(echo "$row" | jq -r .name)
+            url=$(echo "$row" | jq -r .url)
+            ref=$(echo "$row" | jq -r .ref)
+            sha=$(echo "$row" | jq -r .sha)
+            remote=$(git ls-remote "$url" "refs/tags/$ref" "refs/tags/$ref^{}" | awk '{print $1}' | tr '\n' ' ')
+            case " $remote " in
+              *" $sha "*) echo "$name: $ref -> $sha ok" ;;
+              *) echo "$name: pin $sha does not match tag $ref on $url (found: $remote)"; exit 1 ;;
+            esac
+          done < <(jq -c '.plugins[] | {name: .name, url: .source.url, ref: .source.ref, sha: .source.sha}' .agents/plugins/marketplace.json)

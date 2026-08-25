@@ -1,0 +1,22 @@
+{
+  "name": "game-dev-2d",
+  "interface": {
+    "displayName": "game-dev-2d"
+  },
+  "plugins": [
+    {
+      "name": "gdd",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/MisterVitoPro/gdd.git",
+        "ref": "v2.0.0",
+        "sha": "564e83981c184d15e1a2b2ff36b01e912c8d8283"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
