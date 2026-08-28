@@ -11,7 +11,7 @@
     {
       "name": "gdd",
       "source": { "source": "github", "repo": "MisterVitoPro/gdd" },
-      "description": "Game Doc Forge: multi-agent pipeline that turns a game idea into an audited Game Design Document through a pillar-first concept interview, a forked video-game or tabletop deep interview, optional web research, supplementary documents, and a session index.",
+      "description": "Game Doc Forge: multi-agent pipeline that turns a game idea into an audited Game Design Document through a pillar-first concept interview, a forked video-game or tabletop deep interview, optional web research, supplementary documents, a session index, and a self-contained HTML reading edition.",
       "category": "documentation"
     }
   ]
