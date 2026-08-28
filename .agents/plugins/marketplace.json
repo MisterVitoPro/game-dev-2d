@@ -9,8 +9,8 @@
       "source": {
         "source": "url",
         "url": "https://github.com/MisterVitoPro/gdd.git",
-        "ref": "v2.0.0",
-        "sha": "564e83981c184d15e1a2b2ff36b01e912c8d8283"
+        "ref": "v2.1.0",
+        "sha": "630ae23103cf722be209708c0a1b5f01af25b73c"
       },
       "policy": {
         "installation": "AVAILABLE",
